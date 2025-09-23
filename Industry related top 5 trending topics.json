@@ -1,0 +1,380 @@
+{
+  "name": "Industry related top 5 trending topics",
+  "nodes": [
+    {
+      "parameters": {
+        "jsonSchemaExample": "[\n  {\n    \"title\": \"string\",\n    \"summary\": \"string\",\n    \"hashtags\": [\"string\"],\n    \"link\": \"string\",\n    \"date\": \"string (YYYY-MM-DD)\",\n    \"source\": \"string\"\n  }\n]\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        2240,
+        784
+      ],
+      "id": "3d56c055-1703-420e-9965-00d23a378a43",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    json: {\n      articles: items.map(item => item.json)\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1856,
+        560
+      ],
+      "id": "15208c33-e226-4b96-bf3e-131e5414e5b1",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "news_results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        560
+      ],
+      "id": "d02118f8-1de9-41ad-84ab-14b4c9f6877d",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c8b5b0a3-7776-4930-a1d3-15489b0a988c",
+              "name": "Title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "08bd7ea8-1fa5-490c-81e3-09e557cd59f5",
+              "name": "Link",
+              "value": "={{ $json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "105dfc2f-0313-433f-984c-02ad7783d0ad",
+              "name": "date",
+              "value": "={{ $json.date }}",
+              "type": "string"
+            },
+            {
+              "id": "20b2015d-d116-4e84-a268-bc39e95770e7",
+              "name": "source",
+              "value": "={{ $json.source.name || $json.source }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1632,
+        560
+      ],
+      "id": "66f830b2-7d59-45b9-83f5-027a6d167f77",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert digital marketing news analyst for the Indian market.\n\nAnalyze the provided articles and select exactly 5 most relevant topics for digital marketers in India for the upcoming week.\n\nFor each selected article, create:\n- A clear, engaging title\n- A 2-sentence summary explaining relevance to Indian digital marketers\n- 3 relevant hashtags (without # symbol)\n- Include the original link and date\n- Extract the source name\n\nArticles to analyze:\n{{ JSON.stringify($json.articles, null, 2) }}\n\nReturn exactly 5 results in the specified JSON array format.",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2080,
+        560
+      ],
+      "id": "f78a1516-ee0b-449a-a160-fce05ce31610",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.3
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2048,
+        784
+      ],
+      "id": "21c95010-c997-4acc-ade6-3c02b62a0a8d",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "JbsspXhYmpXrDmEN",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1ROe3YpRYaS2WcPMbxm-OjfLhujsXS_RKY2iodzWs7bg",
+          "mode": "list",
+          "cachedResultName": "Industry related top 5 trending topics",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ROe3YpRYaS2WcPMbxm-OjfLhujsXS_RKY2iodzWs7bg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ROe3YpRYaS2WcPMbxm-OjfLhujsXS_RKY2iodzWs7bg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "title": "={{ $json.output[0].title }}",
+            "summary": "={{ $json.output[0].summary }}",
+            "hashtags": "={{ $json.output[0].hashtags }}",
+            "link": "={{ $json.output[0].link }}",
+            "date": "={{ $json.output[0].date }}",
+            "source": "={{ $json.output[0].source }}"
+          },
+          "matchingColumns": [
+            "output"
+          ],
+          "schema": [
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "hashtags",
+              "displayName": "hashtags",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "link",
+              "displayName": "link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        2464,
+        560
+      ],
+      "id": "74d61060-9060-4144-b5ff-23111d710331",
+      "name": "Append row in sheet1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "22EeXULid6wWcCbR",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "google_news",
+        "q": "Digital marketing India trends 2025",
+        "additionalFields": {
+          "gl": "in",
+          "hl": "en"
+        },
+        "requestOptions": {}
+      },
+      "type": "n8n-nodes-serpapi.serpApi",
+      "typeVersion": 1,
+      "position": [
+        1184,
+        560
+      ],
+      "id": "55cafd85-dd72-4285-ac22-37e6644a3f30",
+      "name": "Google_news search1",
+      "credentials": {
+        "serpApi": {
+          "id": "EfnItMj7oPaMHir7",
+          "name": "SerpApi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c52ffe9b-3879-4d83-b4a1-b1bd3033e80a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        976,
+        560
+      ],
+      "id": "b3e30c20-efbe-483d-a3c8-27447317f415",
+      "name": "Webhook",
+      "webhookId": "c52ffe9b-3879-4d83-b4a1-b1bd3033e80a"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google_news search1": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Google_news search1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1d5a71fb-91e9-4a87-9fc0-079b4b679e49",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b22ac305748c9c79c363ccd5126ab20f8aa38addd755a24caa6d9b1db23feb05"
+  },
+  "id": "TltbNFwuD51bgxSH",
+  "tags": []
+}
