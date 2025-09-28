@@ -7,7 +7,7 @@ import { FinalCTASection } from "@/components/final-cta-section"
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-background">
       <HeroSection />
       <FeaturesSection />
       <LiveDataSection />

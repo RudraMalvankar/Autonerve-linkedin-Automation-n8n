@@ -42,6 +42,11 @@
   --electric-blue: oklch(0.6 0.25 240);
 }
 
+/* Ensure body takes dark theme properly */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -164,4 +169,19 @@ html {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Background grid pattern */
+.bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Dark theme grid pattern */
+.dark .bg-grid-pattern {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }

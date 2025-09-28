@@ -62,11 +62,11 @@ export default function IndustryTrendsPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-2 sm:p-4 flex items-start sm:items-center justify-center">
+    <main className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background p-2 sm:p-4 flex items-start sm:items-center justify-center">
       <div className="w-full max-w-4xl mx-auto space-y-4 sm:space-y-10 py-4 sm:py-0">
         {/* Back Navigation */}
         <div className="pt-2 sm:pt-4">
-          <a href="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors font-medium text-sm sm:text-base">
+          <a href="/" className="inline-flex items-center gap-2 text-[var(--electric-blue)] hover:text-[var(--electric-blue)]/80 transition-colors font-medium text-sm sm:text-base">
             <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
             Back to AutoNerve
           </a>
@@ -74,34 +74,34 @@ export default function IndustryTrendsPage() {
         {/* Top Header - Mobile Optimized */}
         <div className="text-center py-4 sm:py-8 px-2">
           <div className="mb-4 sm:mb-6">
-            <div className="inline-flex items-center gap-2 sm:gap-3 bg-white/60 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-blue-200/50 shadow">
-              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <div className="inline-flex items-center gap-2 sm:gap-3 bg-card/60 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 border border-border shadow">
+              <div className="w-6 h-6 sm:w-8 sm:h-8 bg-[var(--electric-blue)] rounded-lg flex items-center justify-center">
                 <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
               </div>
-              <span className="text-xs sm:text-sm font-semibold text-blue-900">AI-Powered Trends</span>
+              <span className="text-xs sm:text-sm font-semibold text-[var(--electric-blue)]">AI-Powered Trends</span>
             </div>
           </div>
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 leading-tight px-2">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold text-foreground mb-3 sm:mb-4 leading-tight px-2">
             Industry Trending Topics
           </h1>
-          <p className="text-sm sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed px-4">
+          <p className="text-sm sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4">
             Get the top 5 digital marketing topics for your industry in India, powered by AI and n8n automation.
           </p>
         </div>
         {/* Form Card - Mobile Responsive */}
-        <Card className="w-full mx-2 sm:mx-0 bg-white/80 backdrop-blur-sm border-0 shadow-xl shadow-blue-500/10 rounded-2xl">
+        <Card className="w-full mx-2 sm:mx-0 bg-card/80 backdrop-blur-sm border-0 shadow-xl shadow-[var(--electric-blue)]/10 rounded-2xl">
           <div className="rounded-t-2xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-500/80 via-purple-500/70 to-blue-400/60 text-white rounded-t-2xl px-4 sm:px-10 pt-6 sm:pt-8 pb-4 sm:pb-6 shadow-lg border-b border-blue-200/30">
+            <CardHeader className="bg-gradient-to-r from-[var(--electric-blue)]/80 via-[var(--electric-blue)]/70 to-[var(--electric-blue)]/60 text-white rounded-t-2xl px-4 sm:px-10 pt-6 sm:pt-8 pb-4 sm:pb-6 shadow-lg border-b border-border/30">
               <h2 className="text-lg sm:text-2xl font-bold drop-shadow">Trending Topics Parameters</h2>
               <p className="text-blue-50 mt-1 sm:mt-2 font-medium text-sm sm:text-base">Fill in the details to get your industry trending topics</p>
             </CardHeader>
           </div>
-          <CardContent className="p-4 sm:p-8 bg-white/60 backdrop-blur-xl rounded-b-2xl border border-blue-100/30 shadow-md">
+          <CardContent className="p-4 sm:p-8 bg-card/60 backdrop-blur-xl rounded-b-2xl border border-border/30 shadow-md">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:gap-6 items-center">
             <div className="w-full flex flex-col gap-2">
-              <Label htmlFor="industry" className="font-semibold text-sm sm:text-base text-gray-700 mb-1">Industry</Label>
+              <Label htmlFor="industry" className="font-semibold text-sm sm:text-base text-foreground mb-1">Industry</Label>
               <div className="relative w-full">
-                <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-purple-500">
+                <span className="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-[var(--electric-blue)]">
                   <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
                 </span>
                 <Input
@@ -111,14 +111,14 @@ export default function IndustryTrendsPage() {
                   value={industry}
                   onChange={e => setIndustry(e.target.value)}
                   required
-                  className="pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 text-base sm:text-lg rounded-2xl bg-gradient-to-r from-white/80 via-blue-50/80 to-blue-100/80 border border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 shadow-lg transition-all"
+                  className="pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 text-base sm:text-lg rounded-2xl bg-gradient-to-r from-background/80 via-muted/80 to-muted/80 border border-border focus:border-[var(--electric-blue)] focus:ring-2 focus:ring-[var(--electric-blue)]/20 shadow-lg transition-all"
                 />
               </div>
             </div>
             <Button
               type="submit"
               disabled={loading || !industry}
-              className="w-full h-12 sm:h-14 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-500 hover:from-blue-700 hover:to-purple-700 text-white font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all rounded-2xl mt-1 sm:mt-2 flex items-center justify-center border-0"
+              className="w-full h-12 sm:h-14 bg-gradient-to-r from-[var(--electric-blue)] via-[var(--electric-blue)]/90 to-[var(--electric-blue)] hover:from-[var(--electric-blue)]/90 hover:to-[var(--electric-blue)]/80 text-white font-bold text-base sm:text-lg shadow-xl hover:shadow-2xl transition-all rounded-2xl mt-1 sm:mt-2 flex items-center justify-center border-0"
             >
               {loading ? (
                 <Loader2 className="animate-spin mr-3 h-5 w-5 text-white" />
@@ -129,7 +129,7 @@ export default function IndustryTrendsPage() {
           </form>
           {/* Show error if present */}
           {error && (
-            <div className="mt-4 text-red-500 text-sm flex items-center gap-2">
+            <div className="mt-4 text-destructive text-sm flex items-center gap-2">
               <span>⚠️</span> {error}
             </div>
           )}
@@ -145,11 +145,11 @@ export default function IndustryTrendsPage() {
 
           {/* Show Google Sheets download link if available - Mobile Responsive */}
           {sheetUrl && (
-            <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-green-50 border border-green-200 rounded-xl">
+            <div className="mt-4 sm:mt-6 p-3 sm:p-4 bg-green-500/10 border border-green-500/20 rounded-xl">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
-                  <h4 className="text-sm font-semibold text-green-800">Data Available in Google Sheets</h4>
-                  <p className="text-xs text-green-600 mt-1">View and download the complete trending topics data</p>
+                  <h4 className="text-sm font-semibold text-green-400">Data Available in Google Sheets</h4>
+                  <p className="text-xs text-green-300 mt-1">View and download the complete trending topics data</p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <Button
@@ -161,7 +161,7 @@ export default function IndustryTrendsPage() {
                   </Button>
                   <Button
                     onClick={() => window.open(sheetUrl.replace('/edit', '/export?format=xlsx'), '_blank')}
-                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center gap-2"
+                    className="bg-[var(--electric-blue)] hover:bg-[var(--electric-blue)]/90 text-white text-sm px-3 sm:px-4 py-2 rounded-lg flex items-center justify-center gap-2"
                   >
                     <Download className="w-4 h-4" />
                     Download Excel
@@ -175,12 +175,12 @@ export default function IndustryTrendsPage() {
           {topics.length > 0 && (
             <div className="mt-6 sm:mt-8">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 gap-3">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-800">Top 5 Trending Topics</h3>
+                <h3 className="text-lg sm:text-xl font-bold text-foreground">Top 5 Trending Topics</h3>
                 {sheetUrl && (
                   <Button
                     onClick={() => window.open(sheetUrl, '_blank')}
                     variant="outline"
-                    className="text-sm flex items-center justify-center gap-2 self-start"
+                    className="text-sm flex items-center justify-center gap-2 self-start border-[var(--electric-blue)] text-[var(--electric-blue)] hover:bg-[var(--electric-blue)]/10"
                   >
                     <ExternalLink className="w-4 h-4" />
                     View in Sheets
@@ -189,14 +189,14 @@ export default function IndustryTrendsPage() {
               </div>
               <div className="flex flex-col gap-4 sm:gap-6">
                 {topics.map((topic: any, idx: number) => (
-                  <Card key={idx} className="bg-white/90 border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                  <Card key={idx} className="bg-card/90 border border-border rounded-xl shadow-md hover:shadow-lg transition-shadow">
                     <CardHeader className="px-4 sm:px-6 pt-4 sm:pt-6 pb-2">
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                         <div className="flex-1">
-                          <h4 className="text-base sm:text-lg font-semibold text-blue-700 mb-2 leading-tight">{topic.title}</h4>
-                          <p className="text-sm text-gray-600 mb-3 leading-relaxed">{topic.summary}</p>
+                          <h4 className="text-base sm:text-lg font-semibold text-[var(--electric-blue)] mb-2 leading-tight">{topic.title}</h4>
+                          <p className="text-sm text-muted-foreground mb-3 leading-relaxed">{topic.summary}</p>
                         </div>
-                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium self-start sm:ml-4">
+                        <span className="text-xs bg-[var(--electric-blue)]/10 text-[var(--electric-blue)] px-2 py-1 rounded-full font-medium self-start sm:ml-4">
                           #{idx + 1}
                         </span>
                       </div>
@@ -204,15 +204,15 @@ export default function IndustryTrendsPage() {
                     <CardContent className="px-4 sm:px-6 pb-4 sm:pb-6">
                       <div className="flex flex-wrap gap-2 mb-4">
                         {topic.hashtags && (Array.isArray(topic.hashtags) ? topic.hashtags : topic.hashtags.split(',')).map((tag: string, i: number) => (
-                          <span key={i} className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-2 sm:px-3 py-1 rounded-full text-xs font-medium">
+                          <span key={i} className="bg-gradient-to-r from-[var(--electric-blue)]/10 to-[var(--electric-blue)]/20 text-[var(--electric-blue)] px-2 sm:px-3 py-1 rounded-full text-xs font-medium">
                             #{tag.trim()}
                           </span>
                         ))}
                       </div>
-                      <div className="flex flex-col gap-2 text-xs text-gray-500">
+                      <div className="flex flex-col gap-2 text-xs text-muted-foreground">
                         <div className="flex items-center gap-2">
                           <ExternalLink className="w-3 h-3" />
-                          <a href={topic.link} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800 break-all">
+                          <a href={topic.link} target="_blank" rel="noopener noreferrer" className="underline text-[var(--electric-blue)] hover:text-[var(--electric-blue)]/80 break-all">
                             Read Full Article
                           </a>
                         </div>
