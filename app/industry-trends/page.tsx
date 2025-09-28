@@ -4,7 +4,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Loader2, TrendingUp } from "lucide-react";
+import { Loader2, TrendingUp, Download, ExternalLink } from "lucide-react";
 
 // TODO: Replace with your n8n webhook URL
 const WEBHOOK_URL = "https://n8n-kartik-hfaqabaagehkhfhe.malaysiawest-01.azurewebsites.net/webhook/c52ffe9b-3879-4d83-b4a1-b1bd3033e80a";
@@ -14,12 +14,16 @@ export default function IndustryTrendsPage() {
   const [loading, setLoading] = useState(false);
   const [topics, setTopics] = useState<any[]>([]);
   const [error, setError] = useState("");
+  const [sheetUrl, setSheetUrl] = useState("");
+  const [rawResponse, setRawResponse] = useState<any>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-  setTopics([]);
+    setTopics([]);
+    setSheetUrl("");
+    setRawResponse(null);
     try {
       // POST to n8n webhook
       const res = await fetch(WEBHOOK_URL, {
@@ -29,9 +33,29 @@ export default function IndustryTrendsPage() {
       });
       if (!res.ok) throw new Error("Failed to fetch topics");
       const data = await res.json();
-      setTopics(data.output || data.articles || []);
+      
+      // Store the complete raw response for debugging
+      // setRawResponse(data);
+      
+      // Handle the response format from your n8n workflow
+      if (data.rows && Array.isArray(data.rows)) {
+        setTopics(data.rows);
+      } else if (data.output && Array.isArray(data.output)) {
+        setTopics(data.output);
+      } else if (data.articles && Array.isArray(data.articles)) {
+        setTopics(data.articles);
+      } else {
+        // Handle the case where topics are directly in the response
+        setTopics(Array.isArray(data) ? data : []);
+      }
+      
+      // Set the Google Sheets URL if available
+      if (data.sheetUrl) {
+        setSheetUrl(data.sheetUrl);
+      }
     } catch (err: any) {
       setError(err.message || "Unknown error");
+      setRawResponse({ error: err.message });
     } finally {
       setLoading(false);
     }
@@ -109,34 +133,98 @@ export default function IndustryTrendsPage() {
               <span>⚠️</span> {error}
             </div>
           )}
-          {/* Show all raw output for debugging */}
-          <div className="mt-6 p-4 bg-gray-100 rounded text-xs text-gray-700 overflow-x-auto">
-            <strong>Raw Output:</strong>
-            <pre>{JSON.stringify(topics, null, 2)}</pre>
-          </div>
+          {/* Show raw webhook response for debugging */}
+          {/* {rawResponse && (
+            <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-xl">
+              <h4 className="text-sm font-semibold text-gray-800 mb-2">🔍 Raw Webhook Response (Debug)</h4>
+              <div className="bg-gray-900 text-green-400 p-3 rounded-lg text-xs font-mono overflow-x-auto max-h-96">
+                <pre>{JSON.stringify(rawResponse, null, 2)}</pre>
+              </div>
+            </div>
+          )} */}
+
+          {/* Show Google Sheets download link if available */}
+          {sheetUrl && (
+            <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-green-800">Data Available in Google Sheets</h4>
+                  <p className="text-xs text-green-600 mt-1">View and download the complete trending topics data</p>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => window.open(sheetUrl, '_blank')}
+                    className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-2 rounded-lg flex items-center gap-2"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    View Sheet
+                  </Button>
+                  <Button
+                    onClick={() => window.open(sheetUrl.replace('/edit', '/export?format=xlsx'), '_blank')}
+                    className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-lg flex items-center gap-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download Excel
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Show topics as cards if available */}
           {topics.length > 0 && (
-            <div className="mt-8 flex flex-col gap-6">
-              {topics.map((topic: any, idx: number) => (
-                <Card key={idx} className="bg-white/80 border border-gray-200 rounded-xl shadow-sm">
-                  <CardHeader className="px-6 pt-6 pb-2">
-                    <h3 className="text-lg font-semibold text-blue-700 mb-1">{topic.title}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{topic.summary}</p>
-                  </CardHeader>
-                  <CardContent className="px-6 pb-4">
-                    <div className="flex flex-wrap gap-2 mb-2">
-                      {topic.hashtags && topic.hashtags.map((tag: string, i: number) => (
-                        <span key={i} className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium">{tag}</span>
-                      ))}
-                    </div>
-                    <div className="flex flex-col gap-1 text-xs text-gray-500">
-                      <a href={topic.link} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">Source</a>
-                      <span>Date: {topic.date}</span>
-                      <span>Source: {topic.source}</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+            <div className="mt-8">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-bold text-gray-800">Top 5 Trending Topics</h3>
+                {sheetUrl && (
+                  <Button
+                    onClick={() => window.open(sheetUrl, '_blank')}
+                    variant="outline"
+                    className="text-sm flex items-center gap-2"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    View in Sheets
+                  </Button>
+                )}
+              </div>
+              <div className="flex flex-col gap-6">
+                {topics.map((topic: any, idx: number) => (
+                  <Card key={idx} className="bg-white/90 border border-gray-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+                    <CardHeader className="px-6 pt-6 pb-2">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <h4 className="text-lg font-semibold text-blue-700 mb-2 leading-tight">{topic.title}</h4>
+                          <p className="text-sm text-gray-600 mb-3 leading-relaxed">{topic.summary}</p>
+                        </div>
+                        <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-medium ml-4">
+                          #{idx + 1}
+                        </span>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="px-6 pb-6">
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {topic.hashtags && (Array.isArray(topic.hashtags) ? topic.hashtags : topic.hashtags.split(',')).map((tag: string, i: number) => (
+                          <span key={i} className="bg-gradient-to-r from-blue-100 to-purple-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                            #{tag.trim()}
+                          </span>
+                        ))}
+                      </div>
+                      <div className="flex flex-col gap-2 text-xs text-gray-500">
+                        <div className="flex items-center gap-2">
+                          <ExternalLink className="w-3 h-3" />
+                          <a href={topic.link} target="_blank" rel="noopener noreferrer" className="underline text-blue-600 hover:text-blue-800">
+                            Read Full Article
+                          </a>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>📅 {topic.date}</span>
+                          <span>📰 {topic.source}</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           )}
         </CardContent>
