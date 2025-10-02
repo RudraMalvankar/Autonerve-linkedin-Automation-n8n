@@ -32,7 +32,7 @@ const features = [
     title: "Profile Visitor → Auto DM",
     description: "Automatically send personalized messages with CTAs to your profile visitors.",
     highlight: "Auto CTA",
-    href: undefined,
+    href: "/linkedin-autodm",
   },
 ]
 
